@@ -1,3 +1,5 @@
+library(psych)
+library(car)
 source("get_data.R")
 
 # Hypothese 1
@@ -23,6 +25,20 @@ describeBy(participant_data$angleDelta, participant_data$task)
 wilcox.test(participant_data$angleDelta, participant_data$task, 
             paired = TRUE, exact = FALSE, correct = FALSE, conf.int = TRUE, 
             alternative = "two.sided")
+
+# Hypothese 5 - AngleDelta ~ Task + Condition
+# Anova: Nein, da keine normalverteilung und varianzen nicht homogen
+# Kruskal: Nicht signifikant
+describeBy(participant_data$angleDelta, (participant_data$task * 3) + participant_data$condition)
+leveneTest(participant_data$angleDelta, (participant_data$task * 3) + participant_data$condition)
+shapiro.test(participant_data$angleDelta)
+kruskal.test(participant_data$angleDelta, participant_data$task * 3 + participant_data$condition)
+
+# Hypothese 6
+describeBy(participant_data$trialDuration, (participant_data$task * 3) + participant_data$condition)
+leveneTest(participant_data$trialDuration, (participant_data$task * 3) + participant_data$condition)
+shapiro.test(participant_data$trialDuration)
+kruskal.test(participant_data$trialDuration, participant_data$task * 3 + participant_data$condition)
 
 # Hypothese 5
 angleDelta_reg <- lm(participant_data$angleDelta~participant_data$trialNumber)
