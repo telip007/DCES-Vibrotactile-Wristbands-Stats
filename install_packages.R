@@ -1,0 +1,1 @@
+install.packages(c("tidyverse", "readxl", "car", "psych", "dplyr", "purrr"))
